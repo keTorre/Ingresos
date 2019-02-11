@@ -5,6 +5,8 @@
  */
 package ec.edu.ister.vista;
 
+import ec.edu.ister.controlador.Coordinador;
+import ec.edu.ister.modelo.Persona;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -15,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class personal extends javax.swing.JFrame {
     DefaultTableModel dtm= new DefaultTableModel();
+    Coordinador cor=new Coordinador();
     /**
      * Creates new form personal
      */
@@ -23,12 +26,23 @@ public class personal extends javax.swing.JFrame {
         String[] titulos=new String[]{"Cédula","Nombre","Apellido","Dirección","Fecha de Nacimiento","E-mail"};
         dtm.setColumnIdentifiers(titulos);
         tblDatos.setModel(dtm);
-    } 
+        activar(false);
+    }
+    
+    public void activar(boolean k){
+        btnAct.setEnabled(k);
+        btnElim.setEnabled(k);
+        btnLimpiar.setEnabled(k);
+    }
     
     public void agregar(){
+        cor.setAgregar(new Persona(txtCI.getText(),txtNombre.getText(),
+            TXTaPELLIDO.getText(),txtDireccion.getText(),
+            txtFecha.getText(),txtEmail.getText()));
         dtm.addRow(new Object[]{txtCI.getText(),txtNombre.getText(),
             TXTaPELLIDO.getText(),txtDireccion.getText(),
-            txtFecha.getText(),txtEmail.getText()});   
+            txtFecha.getText(),txtEmail.getText()}); 
+        
     }
     
     public void eliminar(){
@@ -86,6 +100,7 @@ public class personal extends javax.swing.JFrame {
         }
     }
     
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -112,10 +127,8 @@ public class personal extends javax.swing.JFrame {
         btnIng = new javax.swing.JButton();
         btnAct = new javax.swing.JButton();
         btnElim = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        btnTamArr = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDatos = new javax.swing.JTable();
 
@@ -186,19 +199,13 @@ public class personal extends javax.swing.JFrame {
                     .addComponent(jLabel6))
                 .addGap(8, 8, 8)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(TXTaPELLIDO, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtDireccion, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtEmail)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtCI, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(14, 14, 14))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(txtCI, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TXTaPELLIDO, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,18 +260,17 @@ public class personal extends javax.swing.JFrame {
             }
         });
 
-        btnSalir.setBackground(new java.awt.Color(204, 0, 0));
-        btnSalir.setText("SALIR");
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
-            }
-        });
-
         btnLimpiar.setText("LIMPIAR");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiarActionPerformed(evt);
+            }
+        });
+
+        btnTamArr.setText("TAMAÑO DEL ARREGLO");
+        btnTamArr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTamArrActionPerformed(evt);
             }
         });
 
@@ -278,8 +284,8 @@ public class personal extends javax.swing.JFrame {
                     .addComponent(btnIng)
                     .addComponent(btnAct)
                     .addComponent(btnElim)
-                    .addComponent(btnSalir)
-                    .addComponent(btnLimpiar))
+                    .addComponent(btnLimpiar)
+                    .addComponent(btnTamArr))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -293,31 +299,9 @@ public class personal extends javax.swing.JFrame {
                 .addComponent(btnElim)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnLimpiar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSalir)
-                .addContainerGap())
-        );
-
-        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        jLabel1.setText("INGRESO DE DATOS");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(210, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(184, 184, 184))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnTamArr)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tblDatos.setModel(new javax.swing.table.DefaultTableModel(
@@ -349,33 +333,27 @@ public class personal extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)))
+                .addGap(37, 37, 37)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
-        dispose();
-    }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnIngActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngActionPerformed
         // TODO add your handling code here:
@@ -384,6 +362,7 @@ public class personal extends javax.swing.JFrame {
         }else{
             agregar();
             limpiar();
+            activar(true);
         }
     }//GEN-LAST:event_btnIngActionPerformed
 
@@ -411,7 +390,7 @@ public class personal extends javax.swing.JFrame {
         // TODO add your handling code here:
         limpiar();
         llenarTexto();
-        tblDatos.setEnabled(false);
+        //tblDatos.setEnabled(false);
     }//GEN-LAST:event_tblDatosMouseClicked
 
     private void txtCIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCIKeyTyped
@@ -465,6 +444,11 @@ public class personal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtEmailKeyTyped
 
+    private void btnTamArrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTamArrActionPerformed
+        // TODO add your handling code here:
+        cor.imprimir();
+    }//GEN-LAST:event_btnTamArrActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -506,17 +490,15 @@ public class personal extends javax.swing.JFrame {
     private javax.swing.JButton btnElim;
     private javax.swing.JButton btnIng;
     private javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnTamArr;
     private javax.swing.JLabel ibnDirec;
     private javax.swing.JLabel inbCI;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDatos;
     private javax.swing.JTextField txtCI;
